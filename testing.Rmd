@@ -1,0 +1,58 @@
+## R libraries
+
+```{r}
+library(V8)
+library(reshape2)
+library(ggplot2)
+```
+
+## JS libraries
+
+```{r}
+ct <- new_context()
+numeric <- ct$source("js/numeric-1.2.6.js")
+mathmodels <- ct$source("js/mathmodels.js")
+```
+
+## Models
+
+### SI model
+
+```{r}
+si.out <- ct$call("mathmodels.si",list(0.99,0.01),list(1),0,20,100)
+si.out.long <- melt(si.out,id.vars=c("t"))
+ggplot(data=si.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
+### Levins metapopulation model
+
+```{r}
+levins.out <- ct$call("mathmodels.levins",list(0.01),list(1,0.1),0,20,100)
+levins.out.long <- melt(levins.out,id.vars=c("t"))
+ggplot(data=levins.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
+### Lotka-Volterra predator-prey
+
+```{r}
+predprey.out <- ct$call("mathmodels.predprey",list(0.5,0.1),list(1.5,1,1,1),0,20,100)
+predprey.out.long <- melt(predprey.out,id.vars=c("t"))
+ggplot(data=predprey.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
+### Lotka-Volterra competition
+
+```{r}
+lvcompetition.out <- ct$call("mathmodels.lvcompetition",list(10,10),list(0.2,0.1,100,0.5,0.1,100),0,100,100)
+lvcompetition.out.long <- melt(lvcompetition.out,id.vars=c("t"))
+ggplot(data=lvcompetition.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
+
+### Logistic map
+
+```{r}
+logisticmap.out <-  data.frame(t=seq(0,100),y=unlist(ct$call("mathmodels.logisticmap",list(0.1),list(4),101)))
+ggplot(data=logisticmap.out,aes(x=t,y=y))+geom_line()
+```
+

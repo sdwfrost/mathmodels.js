@@ -12,7 +12,7 @@ mathmodels.logisticgrowth = function(y0,p,t0,tf,nsteps){
   var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
   var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
   var iy=sol.at(ix);
-  var out=iy.map(function(e,i){return {"t":ix[i],"x":e[0]};});
+  var out=iy.map(function(e,i){return {"t":ix[i],"y":e[0]};});
   return out;
 }
 
@@ -24,6 +24,17 @@ mathmodels.si = function(y0,p,t0,tf,nsteps){
   var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
   var iy=sol.at(ix);
   var out=iy.map(function(e,i){return {"t":ix[i],"S":e[0],"I":e[1]};});
+  return out;
+}
+
+mathmodels.sir = function(y0,p,t0,tf,nsteps){
+  var f = function(x,y){
+    return [-p[0]*y[0]*y[1],p[0]*y[0]*y[1]-p[1]*y[1],p[1]*y[1]];
+  };
+  var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
+  var iy=sol.at(ix);
+  var out=iy.map(function(e,i){return {"t":ix[i],"S":e[0],"I":e[1],"R":e[2]};});
   return out;
 }
 

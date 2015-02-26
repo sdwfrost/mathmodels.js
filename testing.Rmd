@@ -24,6 +24,14 @@ si.out.long <- melt(si.out,id.vars=c("t"))
 ggplot(data=si.out.long,aes(x=t,y=value,colour=variable))+geom_line()
 ```
 
+### SIR model
+
+```{r}
+sir.out <- ct$call("mathmodels.sir",list(0.99,0.01,0),list(1,0.1),0,20,100)
+sir.out.long <- melt(sir.out,id.vars=c("t"))
+ggplot(data=sir.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
 ### Levins metapopulation model
 
 ```{r}
@@ -46,6 +54,13 @@ ggplot(data=predprey.out.long,aes(x=t,y=value,colour=variable))+geom_line()
 lvcompetition.out <- ct$call("mathmodels.lvcompetition",list(10,10),list(0.2,0.1,100,0.5,0.1,100),0,100,100)
 lvcompetition.out.long <- melt(lvcompetition.out,id.vars=c("t"))
 ggplot(data=lvcompetition.out.long,aes(x=t,y=value,colour=variable))+geom_line()
+```
+
+### Logistic growth
+
+```{r}
+logisticgrowth.out <- ct$call("mathmodels.logisticgrowth",list(1),list(1,500),0,20,100)
+ggplot(data=logisticgrowth.out)+geom_line(aes(x=t,y=y))
 ```
 
 

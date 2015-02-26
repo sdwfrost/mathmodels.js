@@ -5,6 +5,17 @@ if(typeof global !== "undefined") { global.mathmodels = mathmodels; }
 
 mathmodels.version = "0.01";
 
+mathmodels.logisticgrowth = function(y0,p,t0,tf,nsteps){
+  var f = function(x,y){
+    return [p[0]*y[0]*(1-y[0]/p[1])];
+  };
+  var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
+  var iy=sol.at(ix);
+  var out=iy.map(function(e,i){return {"t":ix[i],"x":e[0]};});
+  return out;
+}
+
 mathmodels.si = function(y0,p,t0,tf,nsteps){
   var f = function(x,y){
     return [-p[0]*y[0]*y[1],p[0]*y[0]*y[1]];
@@ -52,10 +63,12 @@ mathmodels.lvcompetition = function(y0,p,t0,tf,nsteps){
 }
 
 mathmodels.logisticmap = function(y0,p,nsteps){
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return i; });
   var y=new Array(nsteps);
-  y[0]=y0;
+  y[0]=y0[0];
   for(var i=1;i<nsteps;i++){
     y[i]=p[0]*y[i-1]*(1-y[i-1]);
   }
-  return y;
+  var out=y.map(function(e,i){return{"t":ix[i],"y":e};});
+  return out;
 }

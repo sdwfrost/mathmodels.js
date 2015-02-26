@@ -52,7 +52,7 @@ ggplot(data=lvcompetition.out.long,aes(x=t,y=value,colour=variable))+geom_line()
 ### Logistic map
 
 ```{r}
-logisticmap.out <-  data.frame(t=seq(0,100),y=unlist(ct$call("mathmodels.logisticmap",list(0.1),list(4),101)))
-ggplot(data=logisticmap.out,aes(x=t,y=y))+geom_line()
+logisticmap.out <-  ct$call("mathmodels.logisticmap",list(0.1),list(4),101)
+ggplot(data=logisticmap.out)+geom_line(aes(x=t,y=y))
 ```
 

@@ -38,6 +38,17 @@ mathmodels.sir = function(y0,p,t0,tf,nsteps){
   return out;
 }
 
+mathmodels.hysteresis = function(y0,p,t0,tf,nsteps){
+  var h = Math.pow(y[0],p[3])/(Math.pow(y[0],p[3])+Math.pow(p[4],p[3]))
+  var f = function(x,y){
+    return [p[0]-p[1]*y[0]+p[2]*h];
+  };
+  var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
+  var iy=sol.at(ix);
+  var out=iy.map(function(e,i){return {"t":ix[i],"x":e[0]};});
+  return out;
+}
 
 mathmodels.levins = function(y0,p,t0,tf,nsteps){
   var f = function(x,y){
@@ -47,6 +58,17 @@ mathmodels.levins = function(y0,p,t0,tf,nsteps){
   var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
   var iy=sol.at(ix);
   var out=iy.map(function(e,i){return {"t":ix[i],"N":e[0]};});
+  return out;
+}
+
+mathmodels.tilman94 = function(y0,p,t0,tf,nsteps){
+  var f = function(x,y){
+    return [p[0]*y[0]*(1-y[0])-p[1]*y[0],p[2]*y[1]*(1-y[0]-y[1])-p[3]*y[1]-p[0]*y[0]*y[1]];
+  };
+  var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
+  var iy=sol.at(ix);
+  var out=iy.map(function(e,i){return {"t":ix[i],"N1":e[0],"N2":e[1]};});
   return out;
 }
 

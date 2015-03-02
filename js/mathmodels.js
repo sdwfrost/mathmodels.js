@@ -39,8 +39,8 @@ mathmodels.sir = function(y0,p,t0,tf,nsteps){
 }
 
 mathmodels.hysteresis = function(y0,p,t0,tf,nsteps){
-  var h = Math.pow(y[0],p[3])/(Math.pow(y[0],p[3])+Math.pow(p[4],p[3]))
   var f = function(x,y){
+    var h = Math.pow(y[0],p[3])/(Math.pow(y[0],p[3])+Math.pow(p[4],p[3]))
     return [p[0]-p[1]*y[0]+p[2]*h];
   };
   var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);

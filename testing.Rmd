@@ -71,3 +71,11 @@ logisticmap.out <-  ct$call("mathmodels.logisticmap",list(0.1),list(4),101)
 ggplot(data=logisticmap.out)+geom_line(aes(x=t,y=y))
 ```
 
+
+### Hysteresis
+
+```{r}
+hysteresis.out <- ct$call("mathmodels.hysteresis",list(0.1),list(1,0.1,0,0.1,0.1),0,20,100)
+ggplot(data=hysteresis.out)+geom_line(aes(x=t,y=x))
+```
+

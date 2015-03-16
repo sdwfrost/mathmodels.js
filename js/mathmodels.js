@@ -38,6 +38,17 @@ mathmodels.sir = function(y0,p,t0,tf,nsteps){
   return out;
 }
 
+mathmodels.szr = function(y0,p,t0,tf,nsteps){
+  var f = function(x,y){
+    return [-p[0]*y[0]*y[1],p[0]*y[0]*y[1]-p[1]*y[0]*y[1],p[1]*y[0]*y[1]];
+  };
+  var sol = numeric.dopri(t0,tf,y0,f,1e-6,2000);
+  var ix =  Array.apply(0, Array(nsteps)).map(function(e,i) { return t0+tf*(i/(nsteps-1)); });
+  var iy=sol.at(ix);
+  var out=iy.map(function(e,i){return {"t":ix[i],"S":e[0],"Z":e[1],"R":e[2]};});
+  return out;
+}
+
 mathmodels.hysteresis = function(y0,p,t0,tf,nsteps){
   var f = function(x,y){
     var h = Math.pow(y[0],p[3])/(Math.pow(y[0],p[3])+Math.pow(p[4],p[3]))
